@@ -68,6 +68,6 @@ DDOS 공격은 우리 주변에서 충분히 자주 발생하는 위협임을 �
 
 
 
-### 출처   
+### 참조   
 - https://github.com/rapid7/metasploit-framework/tree/master/modules/auxiliary/dos
 - https://blog.cloudflare.com/ddos-threat-report-for-2025-q2
