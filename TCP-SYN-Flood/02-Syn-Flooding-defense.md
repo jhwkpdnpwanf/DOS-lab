@@ -94,9 +94,17 @@ sudo vi /etc/apache2/apache2.conf
 | TCP SYN Flooding |    1초 | 120개 |  300초 |
 
 
-위 상황을 적용하기 위해 
+이러한 방식으로 대량의 SYN 패킷을 보내는 공격자의 IP를 일정 시간동안 차단할 수 있습니다.  
+
+위 방법의 실습은 다음장에서, 방화벽/라우터 역할을 하는 Openwrt 를 구현한 뒤 실습해보겠습니다.  
+
+- Kali(공격자) - OpenWRT - Metasploitable2(공격 대상 서버)
+
+OpenWRT에서 포트포워딩 설정을 간단히 해준 뒤, 방어를 해볼 예정입니다.  
 
 
+<br>
+<br>
 
 **4. First SYN Drop을 적용**  
 
