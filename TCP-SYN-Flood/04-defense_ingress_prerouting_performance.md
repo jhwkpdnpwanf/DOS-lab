@@ -19,7 +19,7 @@
 ### 방어 지점 설정  
 
 <figure style="max-width:780px; margin:0;">
-  <img src="./image.png" alt="Netfilter hooks - simple block diagram" style="width:100%; height:auto; display:block;">
+  <img src="./img/defense-ingress-prerouting.png" alt="Netfilter hooks - simple block diagram" style="width:100%; height:auto; display:block;">
   <figcaption style="font-size:0.9rem; color:#666; margin-top:6px;">
     출처: <a href="https://thermalcircle.de/doku.php?id=blog:linux:nftables_packet_flow_netfilter_hooks_detail" target="_blank" rel="noopener noreferrer" style="color:#0073e6; text-decoration:none;">Thermalcircle</a>,
     Netfilter hooks - simple block diagram
@@ -52,13 +52,13 @@
 ### 1. 아무런 방어 조치도 취하지 않은 상태
 
 **초기 상태**
-![alt text](image-5.png)
+![alt text](./img/defense-ingress-prerouting5.png)
 
 **20초~50초 사이 5초 간격 상태**
-![alt text](image-1.png)
+![alt text](./img/defense-ingress-prerouting1.png)
 
 **60초 간 실행 후 상태**
-![alt text](image-6.png)  
+![alt text](./img/defense-ingress-prerouting6.png)  
 
 62548 121940
 
@@ -97,13 +97,13 @@ nft list chain inet syn_test1 prerouting
 
 
 **초기 상태**
-![alt text](image-7.png)  
+![alt text](./img/defense-ingress-prerouting7.png)  
 
 **20초~50초 사이 5초 간격 상태**
-![alt text](image-4.png)
+![alt text](img/defense-ingress-prerouting4.png)
 
 **60초 간 실행 후 상태**
-![alt text](image-8.png)
+![alt text](./img/defense-ingress-prerouting8.png)
 
 68471 79484
 
@@ -112,7 +112,7 @@ nft list chain inet syn_test1 prerouting
 
 ### 3. ingress에서 방어
 
-![alt text](image-9.png)
+![alt text](./img/defense-ingress-prerouting9.png)
 
 우선 ifconfig 를 통해 WAN 인터페이스를 알아둡니다. 
 
@@ -138,19 +138,19 @@ nft add rule inet syn_test2 ingress_guard 'tcp flags & (syn|ack) == syn limit ra
 nft list chain inet syn_test2 ingress_guard
 ```
 
-![alt text](image-11.png)  
+![alt text](./img/defense-ingress-prerouting11.png)  
 
 전에 만들어둔 syn_test1 테이블은 삭제해주고, 해당룰만 적용되어있음을 확인해줍니다.    
 
 **초기 상태**
-![alt text](image-10.png)   
+![alt text](./imgdefense-ingress-prerouting10.png)   
 
 
 **20초~50초 사이 5초 간격 상태**
-![alt text](image-14.png)
+![alt text](./img/defense-ingress-prerouting14.png)
 
 **60초 간 실행 후 상태**
-![alt text](image-12.png)
+![alt text](./imgdefense-ingress-prerouting12.png)
 
 65968 76291
 
