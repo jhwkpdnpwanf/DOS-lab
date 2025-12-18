@@ -144,14 +144,14 @@ nft list chain inet syn_test2 ingress_guard
 전에 만들어둔 syn_test1 테이블은 삭제해주고, 해당룰만 적용되어있음을 확인해줍니다.    
 
 **초기 상태**
-![alt text](./img/imgdefense-ingress-prerouting10.png)   
+![alt text](./img/defense-ingress-prerouting10.png)   
 
 
 **20초~50초 사이 5초 간격 상태**
 ![alt text](./img/defense-ingress-prerouting14.png)
 
 **60초 간 실행 후 상태**
-![alt text](./img/imgdefense-ingress-prerouting12.png)
+![alt text](./img/defense-ingress-prerouting12.png)
 
 65968 76291
 
