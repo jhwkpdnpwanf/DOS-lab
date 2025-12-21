@@ -100,7 +100,7 @@ sudo vi /etc/apache2/apache2.conf
 
 - Kali(공격자) - OpenWRT - Metasploitable2(공격 대상 서버)
 
-OpenWRT에서 포트포워딩 설정을 간단히 해준 뒤, 방어를 해볼 예정입니다.  
+OpenWRT를 방화벽으로 만드는 설정을 간단히 해준 뒤, 방어를 해볼 예정입니다.  
 
 
 <br>

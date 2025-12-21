@@ -1,4 +1,4 @@
-# 임계치 기반 차단: ingress hook & PREROUTING hook 에서 DoS 차단 비교 
+# SYN Flood 방어 지점별 성능 비교: 임계치 기반 차단 (ingress hook & PREROUTING hook)
 
 ### 임계치 기반 차단  
 
