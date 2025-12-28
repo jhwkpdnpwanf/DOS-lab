@@ -141,7 +141,7 @@ config redirect
 내부 주소에서만 listen 하도록 수정해주었습니다.  
 
 ```
-/etc/init.d/firewall
+/etc/config/uhttpd
 ```
 
 ```
