@@ -231,6 +231,18 @@ Alpine 에서는 설정이 끝나면 저장을 해주어야하므로 커밋을 �
 lbu commit -d
 ```
 
-DNS 서버 구성이 이로써 완료되었습니다.
-설정이 정상적으로 유지되는 것도 확인하였으며, 현재 환경은 실험을 진행하기에 충분히 안정적인 상태입니다.
-이후 단계에서는 해당 환경을 기반으로 실제 공격 시나리오를 적용하여 동작과 영향을 분석해 보겠습니다.
+
+<br>
+<br>
+
+
+
+### Reference  
+- alpine linux download : https://www.alpinelinux.org/downloads/
+- https only mode : https://support.mozilla.org/ko/kb/https-only-prefs
+- hsts : https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+- hsts Q&A: 
+  - https://support.mozilla.org/ko/questions/919498  
+  - https://support.mozilla.org/ko/questions/1343377
+  - https://support.mozilla.org/ko/questions/942924
+- How to clear HSTS settings in Firefox : https://www.thesslstore.com/blog/clear-hsts-settings-chrome-firefox/
