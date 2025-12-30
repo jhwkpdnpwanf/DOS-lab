@@ -1,7 +1,9 @@
-# DNS 세팅
+# Alpine DNS 서버 세팅
 
-### 목표 세팅
+### 목표 상황 (예시)
 
+위 구조는 DNS Query Flooding 을 위한 예시이며   
+DNS Reflection Attack에서의 구조와는 차이가 있습니다. (공격대상이 dns 서버 X)
 
 ```
      kali (공격자) 
@@ -18,7 +20,7 @@
 
 ```
 
-
+<br>
 
 ### DNS 서버 구성 - Alpine Linux 세팅
 
@@ -179,8 +181,9 @@ tail -f /var/log/dnsmasq.log
 
 ### kali 세팅
 
-`/etc/resolv.conf` 파일에서 dns 서버를 `192.168.125.10` 로 바꿔줬습니다.   
-실습용으로 특정 주소에만 접근할 예정이니 kali의 dns 서버를 바꿔줬습니다.  
+실습용으로 특정 주소에만 접근할 예정이므로 kali의 dns 서버를 바꿔줍시다.  
+`/etc/resolv.conf` 파일에서 dns 서버를 `192.168.125.10` 로 변경해주면 됩니다.  
+
 
 ```
 nameserver 192.168.125.10

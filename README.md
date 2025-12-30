@@ -3,7 +3,7 @@
 _이 프로젝트는 학습 목적으로 실행된 것입니다. 격리된 실습용 VM에서만 사용해주세요. 허가 받지 않은 시스템에 대해서는 절대 실행하지 마세요._
 
 ### 실행 환경  
-- 취약 dns 서버 :  Alpine Version 3.23.2 (Released Dec 17, 2025)
+- 취약 dns 서버 :  Alpine Extended Version 3.23.2 (Released Dec 17, 2025)
 - 공격 대상 서버 : metasploitable2
 - 공격자 서버 : kali linux (2025.1c)
 - 사용 가상머신 : Vmare 
