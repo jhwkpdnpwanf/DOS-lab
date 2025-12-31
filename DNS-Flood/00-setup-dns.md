@@ -138,7 +138,6 @@ ls -l /etc/dnsmasq.conf
 ```conf
 port=53
 listen-address=192.168.125.10
-cache-size=10000
 
 log-queries
 log-facility=/var/log/dnsmasq.log
