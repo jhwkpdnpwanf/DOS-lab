@@ -145,10 +145,6 @@ ls -l /etc/dnsmasq.conf
 port=53
 listen-address=192.168.125.10
 cache-size=0
-dns-forward-max=20
-dns-queue-size=20
-edns-packet-max=512
-retry-time=1
 
 log-queries
 log-facility=/var/log/dnsmasq.log
