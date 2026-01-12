@@ -1,4 +1,4 @@
-# DNS Flooding 공격 실습 
+# DNS Flooding 에 대한 기본 개념  
 
 ### DNS Flooding 개념  
 

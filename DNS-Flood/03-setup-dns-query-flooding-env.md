@@ -273,7 +273,7 @@ eth0이 br-dns 의 멤버가 되도록 해주었습니다.
 최종적으로 ip a 를 통해 상태를 확인하면 아래와 같습니다.  
 
 
-![alt text](image-1.png)
+![alt text](./img/NXDOMAIN5.png)
 
 
 
@@ -378,8 +378,12 @@ listen-address=192.168.125.40
 no-resolv
 no-hosts
 
-address=/dos.lab/192.168.125.145
+host-record=dos.lab,192.168.125.145
 local=/dos.lab/
+domain=dos.lab
+
+log-queries
+log-facility=/var/log/dnsmasq_auth.log
 ```
 
 <br>
@@ -402,7 +406,34 @@ ip netns exec auth_ns dnsmasq -C /etc/dnsmasq/auth.conf
 tail -f /var/log/dnsmasq.log
 ```
 
-![alt text](image.png)
+![alt text](./img/NXDOMAIN6.png)  
 
-이렇게 192.168.125.10 인 리졸버 서버에서 root 서버인 192.168.125.20 인 루트서버로 패킷이 흘러갑니다.  
+이렇게 192.168.125.10 인 리졸버 서버에서 root 서버인 192.168.125.20 인 루트서버로 패킷이 흘러가는 것을 확인할 수 있습니다.  
 
+<br>
+
+![alt text](./img/NXDOMAIN6.png)   
+
+권한 서버에서도 위와 같이 dos.lab에 대한 요청을 192.168.125.145인 openwrt 주소를 잘 알려주는 것을 확인할 수 있습니다.  
+
+<br>
+
+
+![alt text](./img/NXDOMAIN8.png)   
+
+접속도 잘되는 것을 확인해볼 수 있습니다.    
+
+이렇게 dos.lab에 대해서는 잘 실행이되지만, 만약 hi.dos.lab과 같이 존재하지 않는 하위도메인을 입력하게 된다면,  
+
+<br>
+
+![alt text](./img/NXDOMAIN9.png)   
+
+이렇게 NXDOAMIN을 보내게 됩니다.  
+
+<br>
+<br>
+
+이로써 Authoritative 서버의 로그를 확인해보며 존재하지 않는 하위 도메인에 대해 NXDOMAIN을 보내게 되는 것을 확인해보았습니다.   
+
+이를 활용하여 다음 실습에서 NXDOMAIN Flood 공격을 실습해보겠습니다.  
