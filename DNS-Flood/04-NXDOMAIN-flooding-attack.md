@@ -1,17 +1,17 @@
-# NXDOMAIN Flooding 공격 실습  
+# NXDOMAIN Flooding 공격 실습   
 
-### NXDOMAIN Flooding
+### NXDOMAIN Flooding  
 
 
 <br>
 
 
-### dns 질의 코드 작성   
+### dns 질의 코드 작성    
 
 <figure style="max-width: 800px; margin: 0;">
   <div style="display: flex; gap: 10px; align-items: flex-start;">
-    <img src="image.png" alt="정보통신기술용어해설 dns 구조" style="width: 50%; height: auto;">
-    <img src="image-1.png" alt="정보통신기술용어해설 dns 구조" style="width: 50%; height: auto;">
+    <img src="./img/nxdomain_flood.png" alt="정보통신기술용어해설 dns 구조" style="width: 50%; height: auto;">
+    <img src="./img/nxdomain_flood1.png" alt="정보통신기술용어해설 dns 구조" style="width: 50%; height: auto;">
   </div>
   
   <figcaption style="font-size: 0.9rem; color: #666; margin-top: 10px;">
@@ -107,12 +107,13 @@ int main() {
 질의 영역에서는 쿼리 name은 dos.lab에 해당하는 `3 d o s 3 l a b 0`으로 맞춰주었고 잘의 타입은 도메인 주소를 찾는 A를, 등급은 인터넷에 해당하는 IN(1)을 사용하였습니다.  
 
 
-![alt text](image-3.png)
+![정보통신기술용어해설 dns 구조](./img/nxdomain_flood3.png)  
+
 응답 패킷 헤더의 맨 앞 2바이트는 id 이므로 이것을 가져오고, 마지막 4바이트가 리소스 데이터인 ip 주소가 될 것이므로 맨 뒤 4바이트에서 ip 주소를 가져와 출력해줍니다.  
 
 <br> 
 
-![alt text](image-2.png)  
+![alt text](./img/nxdomain_flood2.png)    
 
 이제 실행시켜주면 실행마다 다른 id를 가지는 질의가 완성되었습니다.  
 
@@ -210,7 +211,7 @@ int main() {
 
 <br>
 
-![alt text](image-4.png)  
+![alt text](./img/nxdomain_flood4.png)  
 
 이걸 보내보면 무수히 빠른 속도로 존재하지않는 임의의 도메인 주소를 찾는 것을 확인해볼 수 있습니다.  
 
